@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WondersTravel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- HEADER -->
+<header class="navbar">
+<div class="logo">WondersTravel</div>
+<nav class="nav-menu">
+<button onclick="scrollToSection('wonderSection')">Wonders</button>
+<button onclick="scrollToSection('worldSection')">World Tour</button>
+<button onclick="scrollToSection('indiaSection')">India</button>
+</nav>
+<div class="nav-right">
+<button onclick="openAuth()">Login</button>
+<!-- <button onclick="openAuth()">Sign Up</button> -->
+</div>
+</header>
+<!-- HERO SLIDER -->
+<section class="hero">
+<img id="slider"
+src="https://cdn.thecollector.com/wp-content/uploads/2021/12/the-taj-mahal-architectural-digest.jpg?width=1200&quality=100&dpr=2">
+
+<div class="hero-text">
+<h1 id="heroTitle">Explore Wonders Of The World</h1>
+</div>
+</section>
+
+<!-- WONDERS -->
+<section class="section" id="wonderSection">
+
+<h2>Explore Wonders Of The World</h2>
+
+<div class="grid" id="wonderGrid"></div>
+
+</section>
+
+<!-- WORLD TOUR -->
+<section class="section" id="worldSection">
+
+<h2>World Tour Destinations</h2>
+
+<div class="grid" id="worldGrid"></div>
+
+</section>
+
+<!-- INDIA -->
+<section class="section" id="indiaSection">
+
+<h2>Explore India</h2>
+
+<div class="grid" id="indiaGrid"></div>
+
+</section>
+
+<!-- DETAILS PAGE SAME PAGE -->
+<section class="section hidden" id="detailsSection">
+
+<button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+<h1 id="placeName"></h1>
+
+<div class="multi-images">
+<img id="placeImg1" class="detail-img">
+<img id="placeImg2" class="detail-img">
+<img id="placeImg3" class="detail-img">
+</div>
+
+<p id="placeAbout"></p>
+<p id="placeHistory"></p>
+<p id="placeBudget"></p>
+<p id="placeHotel"></p>
+<p id="placeTravel"></p>
+
+<button onclick="openBooking()">Visit Now</button>
+
+</section>
+
+<!-- BOOKING -->
+<section class="section hidden" id="bookingSection">
+
+<button class="back-btn" onclick="backToDetails()">⬅ Back</button>
+
+<h2>Book Your Adventure</h2>
+
+<input type="number" id="days" placeholder="Days to Stay">
+<input type="number" id="people" placeholder="Travelers">
+
+<select id="cab">
+<option value="5000">Standard Cab</option>
+<option value="8000">Premium Cab</option>
+<option value="15000">Luxury Cab</option>
+</select>
+
+<button onclick="calculateTotal()">Calculate</button>
+
+<h3 id="total"></h3>
+
+<button onclick="openPayment()">Proceed Payment</button>
+
+</section>
+
+<!-- PAYMENT -->
+<section class="section hidden" id="paymentSection">
+
+<button class="back-btn" onclick="backToBooking()">⬅ Back</button>
+
+<h2>Secure Payment</h2>
+
+<input type="text"
+id="card"
+maxlength="16"
+placeholder="Enter 16 Digit Card Number">
+
+<button onclick="payNow()">Pay Now</button>
+
+<p id="payResult"></p>
+
+</section>
+
+<!-- REVIEWS -->
+<section class="section hidden" id="reviewSection">
+
+<h2>Traveler Reviews</h2>
+
+<textarea id="reviewText"
+placeholder="Write your travel review"></textarea>
+
+<button onclick="submitReview()">Submit Review</button>
+
+<div id="reviewList"></div>
+
+</section>
+
+<!-- LOGIN / REGISTER POPUP -->
+<div class="popup hidden" id="authPopup">
+
+<div class="popup-box auth-box">
+
+<span class="close" onclick="closeAuth()">✖</span>
+
+<!-- LOGIN -->
+<div id="loginBox">
+
+<h2>Welcome Back ✈</h2>
+<p class="mini-text">Login to continue your adventure</p>
+
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="password" placeholder="Enter Password">
+
+<button class="main-btn" onclick="login()">Login</button>
+
+<p class="switch-text">
+New Traveler?
+<a href="#" onclick="showRegister()">Create Account</a>
+</p>
+
+</div>
+
+REGISTER
+<!-- REGISTER SECTION -->
+<div id="registerBox" class="hidden">
+
+<h2>Create Account</h2>
+
+<input type="text" id="fullname" placeholder="Full Name">
+<input type="text" id="mobile" placeholder="Mobile Number">
+<input type="email" id="regEmail" placeholder="Email Address">
+<input type="password" id="regPassword" placeholder="Create Password">
+<input type="text" id="city" placeholder="City">
+<input type="number" id="age" placeholder="Age">
+
+<button onclick="signup()">Register Now</button>
+
+<p style="margin-top:10px;">
+Already Registered?
+<a href="#" onclick="showLogin()">Login Here</a>
+</p>
+
+</div>
+
+<p id="userStatus"></p>
+
+</div>
+
+</div>
+<!-- FOOTER -->
+<footer>
+
+<div>
+<h3>About WondersTravel Project</h3>
+<p>Start your journey to the world.</p>
+<p>Travel the world with us.</p>
+<p>Under the guidance of Dr. Rajesh Kumar Goutam</p>
+</div>
+
+<div>
+<h3>Contact Me!</h3>
+<p>Balwant Sagar</p>
+<p>Roll No.- 2310014025583</p>
+<p>VIth Semester</p>
+<p>Studying in University of Lucknow</p>
+<p>balwant@wonderstravel.com</p>
+<p>+91 9876543210</p>
+</div>
+
+</footer>
+
+<script type="module" src="firebase.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
