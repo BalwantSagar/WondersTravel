@@ -1,4 +1,6 @@
+let currentUser = null;
 import { auth } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const slider = document.getElementById("slider");
 const heroTitle = document.getElementById("heroTitle");
@@ -343,9 +345,7 @@ window.openPlace = openPlace;
 
 function openBooking(){
 
-    const user = auth.currentUser;
-
-    if(!user){
+    if(!currentUser){
         alert("Please login first");
         openAuth();
         return;
@@ -354,6 +354,7 @@ function openBooking(){
     document.getElementById("bookingSection").classList.remove("hidden");
     window.scrollTo({top:0,behavior:"smooth"});
 }
+window.openBooking = openBooking;
 
 document.getElementById("bookingSection").classList.remove("hidden");
 window.scrollTo({top:0,behavior:"smooth"});
@@ -431,6 +432,16 @@ document.getElementById("userStatus").innerText="Please fill all fields";
 return;
 }
 
+    onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        console.log("User logged in:", user.email);
+    } else {
+        currentUser = null;
+        console.log("User logged out");
+    }
+});
+
 let user = {name,mobile,email,pass,city,age};
 
 // localStorage.setItem("travelUser",JSON.stringify(user));
@@ -460,9 +471,12 @@ let saved = JSON.parse(localStorage.getItem("travelUser"));
 
 if(saved && email===saved.email && pass===saved.pass){
 
-isLoggedIn = true;
-localStorage.setItem("loggedIn","true");
+// isLoggedIn = true;
+// localStorage.setItem("loggedIn","true");
 
+    localStorage.setItem("loggedIn","true");
+isLoggedIn = true;
+    
 showUserName(saved.name);
 
 document.getElementById("userStatus").innerText =
