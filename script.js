@@ -1,6 +1,18 @@
-let currentUser = null;
+// let currentUser = null;
 import { auth } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        console.log("User logged in:", user.email);
+    } else {
+        currentUser = null;
+        console.log("User logged out");
+    }
+});
 
 const slider = document.getElementById("slider");
 const heroTitle = document.getElementById("heroTitle");
@@ -354,10 +366,16 @@ function openBooking(){
     document.getElementById("bookingSection").classList.remove("hidden");
     window.scrollTo({top:0,behavior:"smooth"});
 }
-window.openBooking = openBooking;
+function openBooking(){
 
-document.getElementById("bookingSection").classList.remove("hidden");
-window.scrollTo({top:0,behavior:"smooth"});
+    if(!currentUser){
+        alert("Please login first");
+        openAuth();
+        return;
+    }
+
+    document.getElementById("bookingSection").classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
 }
 window.openBooking = openBooking;
 
@@ -467,7 +485,7 @@ function login(){
 let email = document.getElementById("email").value.trim();
 let pass = document.getElementById("password").value.trim();
 
-let saved = JSON.parse(localStorage.getItem("travelUser"));
+// let saved = JSON.parse(localStorage.getItem("travelUser"));
 
 if(saved && email===saved.email && pass===saved.pass){
 
@@ -475,7 +493,7 @@ if(saved && email===saved.email && pass===saved.pass){
 // localStorage.setItem("loggedIn","true");
 
     localStorage.setItem("loggedIn","true");
-isLoggedIn = true;
+// isLoggedIn = true;
     
 showUserName(saved.name);
 
