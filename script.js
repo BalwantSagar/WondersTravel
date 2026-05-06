@@ -1,13 +1,3 @@
-// WondersTravel Final Modified script.js
-// ONLY requested changes done:
-// ✔ Registration fix
-// ✔ Show registered username top-left
-// ✔ Booking works after login
-// ✔ Popup closes properly
-// ✔ Added more World + India destinations
-// ✔ No other section changed
-
-// ---------- ELEMENTS ----------
 const slider = document.getElementById("slider");
 const heroTitle = document.getElementById("heroTitle");
 const heroSub = document.getElementById("heroSub");
