@@ -1,201 +1,242 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WondersTravel</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- HEADER -->
 <header class="navbar">
-<div class="logo">WondersTravel</div>
+<div class="logo" id="siteLogo">WondersTravel</div>
 <nav class="nav-menu">
 <button onclick="scrollToSection('wonderSection')">Wonders</button>
 <button onclick="scrollToSection('worldSection')">World Tour</button>
 <button onclick="scrollToSection('indiaSection')">India</button>
 </nav>
 <div class="nav-right">
-<button onclick="openAuth()">Login</button>
-<!-- <button onclick="openAuth()">Sign Up</button> -->
+<button id="authActionBtn" onclick="openAuth()">Login</button>
+<button id="profileActionBtn" class="hidden" onclick="openProfileSection()">Profile</button>
+<button id="bookingsActionBtn" class="hidden" onclick="openBookingsSection()">My Bookings</button>
+<button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
 </div>
 </header>
-<!-- HERO SLIDER -->
+
+<div id="flashToast" class="flash-toast hidden"></div>
+
 <section class="hero">
-<img id="slider"
-src="https://cdn.thecollector.com/wp-content/uploads/2021/12/the-taj-mahal-architectural-digest.jpg?width=1200&quality=100&dpr=2">
-
+<img
+id="slider"
+src="https://cdn.thecollector.com/wp-content/uploads/2021/12/the-taj-mahal-architectural-digest.jpg?width=1200&quality=100&dpr=2"
+alt="Travel destination slider"
+>
 <div class="hero-text">
+<span class="eyebrow">Journeys with trusted Planning</span>
 <h1 id="heroTitle">Explore Wonders Of The World</h1>
+<p id="heroSub">Browse every destination freely. Login when you are ready to book.</p>
 </div>
 </section>
 
-<!-- WONDERS -->
+<section class="section hidden" id="dashboardSection">
+<div class="dashboard-shell">
+<div class="dashboard-header">
+<div>
+<p class="dashboard-kicker">Traveler Dashboard</p>
+<h2 id="dashboardTitle">Welcome back</h2>
+<p id="dashboardSubtitle">Your profile, bookings, and trip planning tools are ready.</p>
+</div>
+<button class="dashboard-cta" onclick="openBookingsSection()">View My Bookings</button>
+</div>
+<div class="dashboard-grid">
+<article class="dashboard-card">
+<p class="dashboard-label">Profile Status</p>
+<h3 id="profileStatusText">Complete</h3>
+<p>Keep your contact and address updated for faster checkout.</p>
+</article>
+<article class="dashboard-card">
+<p class="dashboard-label">Bookings</p>
+<h3 id="bookingCountText">0 Trips</h3>
+<p>Your confirmed trips will appear here after payment.</p>
+</article>
+<article class="dashboard-card">
+<p class="dashboard-label">Wishlist</p>
+<h3 id="wishlistCountText">0 Saved</h3>
+<p>Save destinations after login and revisit them anytime.</p>
+</article>
+<article class="dashboard-card">
+<p class="dashboard-label">Traveler Level</p>
+<h3 id="travelerLevelText">Explorer</h3>
+<p>Your level grows automatically as you book more journeys.</p>
+</article>
+</div>
+</div>
+</section>
+
 <section class="section" id="wonderSection">
-
 <h2>Explore Wonders Of The World</h2>
-
 <div class="grid" id="wonderGrid"></div>
-
 </section>
 
-<!-- WORLD TOUR -->
 <section class="section" id="worldSection">
-
 <h2>World Tour Destinations</h2>
-
 <div class="grid" id="worldGrid"></div>
-
 </section>
 
-<!-- INDIA -->
 <section class="section" id="indiaSection">
-
 <h2>Explore India</h2>
-
 <div class="grid" id="indiaGrid"></div>
-
 </section>
 
-<!-- DETAILS PAGE SAME PAGE -->
-<section class="section hidden" id="detailsSection">
-
-<button class="back-btn" onclick="goHome()">⬅ Back</button>
-
+<div class="dialog-overlay hidden" id="detailsDialog">
+<section class="dialog-panel" id="detailsSection">
+<button class="dialog-close" onclick="closeDialog('detailsDialog')">X</button>
+<button class="back-btn" onclick="goHome()">Back</button>
 <h1 id="placeName"></h1>
-
 <div class="multi-images">
-<img id="placeImg1" class="detail-img">
-<img id="placeImg2" class="detail-img">
-<img id="placeImg3" class="detail-img">
+<img id="placeImg1" class="detail-img" alt="Place image one">
+<img id="placeImg2" class="detail-img" alt="Place image two">
+<img id="placeImg3" class="detail-img" alt="Place image three">
 </div>
-
 <p id="placeAbout"></p>
 <p id="placeHistory"></p>
 <p id="placeBudget"></p>
 <p id="placeHotel"></p>
 <p id="placeTravel"></p>
-
-<button onclick="openBooking()">Visit Now</button>
-
+<div class="dialog-actions">
+<button id="detailSaveBtn" onclick="toggleWishlist()">Save Place</button>
+<button id="detailVisitBtn" onclick="openBookingFromDetails()">Visit Now</button>
+</div>
 </section>
+</div>
 
-<!-- BOOKING -->
-<section class="section hidden" id="bookingSection">
-
-<button class="back-btn" onclick="backToDetails()">⬅ Back</button>
-
+<div class="dialog-overlay hidden" id="bookingDialog">
+<section class="dialog-panel wide-dialog" id="bookingSection">
+<button class="dialog-close" onclick="closeDialog('bookingDialog')">X</button>
+<button class="back-btn" onclick="backToDetails()">Back</button>
+<div class="booking-shell booking-dialog-shell">
+<div class="booking-intro">
 <h2>Book Your Adventure</h2>
-
-<input type="number" id="days" placeholder="Days to Stay">
-<input type="number" id="people" placeholder="Travelers">
-
+<p id="bookingPlaceName">Prepare your trip details below.</p>
+</div>
+<div class="booking-form">
+<input type="text" id="travelerName" placeholder="Traveler Full Name">
+<input type="text" id="contactNumber" placeholder="Contact Number">
+<input type="date" id="departureDate">
+<input type="number" id="days" placeholder="Days to Stay" min="1">
+<input type="number" id="people" placeholder="Travelers" min="1">
+<input type="text" id="bookingAddress" placeholder="Pickup / Home Address">
 <select id="cab">
 <option value="5000">Standard Cab</option>
 <option value="8000">Premium Cab</option>
 <option value="15000">Luxury Cab</option>
 </select>
-
-<button onclick="calculateTotal()">Calculate</button>
-
+<button onclick="calculateTotal()">Calculate Total</button>
 <h3 id="total"></h3>
-
 <button onclick="openPayment()">Proceed Payment</button>
-
+</div>
+</div>
 </section>
+</div>
 
-<!-- PAYMENT -->
-<section class="section hidden" id="paymentSection">
-
-<button class="back-btn" onclick="backToBooking()">⬅ Back</button>
-
+<div class="dialog-overlay hidden" id="paymentDialog">
+<section class="dialog-panel" id="paymentSection">
+<button class="dialog-close" onclick="closeDialog('paymentDialog')">X</button>
+<button class="back-btn" onclick="backToBooking()">Back</button>
 <h2>Secure Payment</h2>
-
-<input type="text"
-id="card"
-maxlength="16"
-placeholder="Enter 16 Digit Card Number">
-
+<p id="paymentSummary"></p>
+<input type="text" id="card" maxlength="16" placeholder="Enter 16 Digit Card Number">
 <button onclick="payNow()">Pay Now</button>
-
-<p id="payResult"></p>
-
+<p id="payResult" class="status-line"></p>
 </section>
+</div>
 
-<!-- REVIEWS -->
-<section class="section hidden" id="reviewSection">
-
-<h2>Traveler Reviews</h2>
-
-<textarea id="reviewText"
-placeholder="Write your travel review"></textarea>
-
-<button onclick="submitReview()">Submit Review</button>
-
-<div id="reviewList"></div>
-
+<div class="dialog-overlay hidden" id="profileDialog">
+<section class="dialog-panel wide-dialog" id="profileSection">
+<button class="dialog-close" onclick="closeDialog('profileDialog')">X</button>
+<button class="back-btn" onclick="goHome()">Back</button>
+<div class="profile-shell">
+<div class="profile-header">
+<div>
+<h2>Traveler Profile</h2>
+<p>Review and update the details we use for trip bookings.</p>
+</div>
+<button onclick="openBookingsSection()">Open My Bookings</button>
+</div>
+<div class="profile-form">
+<input type="text" id="profileFullName" placeholder="Full Name">
+<input type="text" id="profileEmail" placeholder="Email" disabled>
+<input type="text" id="profileMobile" placeholder="Contact Number">
+<input type="text" id="profileCity" placeholder="City">
+<input type="text" id="profileAddress" placeholder="Address">
+<input type="number" id="profileAge" placeholder="Age" min="1">
+<button onclick="saveProfile()">Save Profile</button>
+<p id="profileStatus" class="status-line"></p>
+</div>
+</div>
 </section>
+</div>
 
-<!-- LOGIN / REGISTER POPUP -->
+<div class="dialog-overlay hidden" id="bookingsDialog">
+<section class="dialog-panel wide-dialog" id="myBookingsSection">
+<button class="dialog-close" onclick="closeDialog('bookingsDialog')">X</button>
+<button class="back-btn" onclick="goHome()">Back</button>
+<div class="bookings-shell">
+<div class="profile-header">
+<div>
+<h2>My Bookings</h2>
+<p>Your confirmed trip plans are listed here.</p>
+</div>
+<button onclick="openProfileSection()">Open Profile</button>
+</div>
+<div id="bookingsList" class="bookings-list"></div>
+</div>
+</section>
+</div>
+
 <div class="popup hidden" id="authPopup">
-
 <div class="popup-box auth-box">
-
-<span class="close" onclick="closeAuth()">✖</span>
-
-<!-- LOGIN -->
+<span class="close" onclick="closeAuth()">X</span>
 <div id="loginBox">
-
-<h2>Welcome Back ✈</h2>
-<p class="mini-text">Login to continue your adventure</p>
-
+<h2>Welcome Back</h2>
+<p class="mini-text" id="authPromptText">Login to unlock booking, profile, and dashboard access.</p>
 <input type="email" id="email" placeholder="Enter Email">
 <input type="password" id="password" placeholder="Enter Password">
-
 <button class="main-btn" onclick="login()">Login</button>
-
+<button class="ghost-btn" onclick="continueAsGuest()">Continue Without Login</button>
 <p class="switch-text">
 New Traveler?
 <a href="#" onclick="showRegister()">Create Account</a>
 </p>
-
 </div>
 
-REGISTER
-<!-- REGISTER SECTION -->
 <div id="registerBox" class="hidden">
-
 <h2>Create Account</h2>
-
 <input type="text" id="fullname" placeholder="Full Name">
 <input type="text" id="mobile" placeholder="Mobile Number">
 <input type="email" id="regEmail" placeholder="Email Address">
 <input type="password" id="regPassword" placeholder="Create Password">
+<input type="text" id="address" placeholder="Address">
 <input type="text" id="city" placeholder="City">
 <input type="number" id="age" placeholder="Age">
-
-<button onclick="signup()">Register Now</button>
-
-<p style="margin-top:10px;">
+<button class="main-btn" onclick="signup()">Register Now</button>
+<button class="ghost-btn" onclick="continueAsGuest()">Continue Without Login</button>
+<p class="switch-text">
 Already Registered?
 <a href="#" onclick="showLogin()">Login Here</a>
 </p>
-
 </div>
 
-<p id="userStatus"></p>
-
+<p id="userStatus" class="status-line"></p>
+</div>
 </div>
 
-</div>
-<!-- FOOTER -->
 <footer>
-
 <div>
 <h3>About WondersTravel Project</h3>
 <p>Start your journey to the world.</p>
 <p>Travel the world with us.</p>
 <p>Under the guidance of Dr. Rajesh Kumar Goutam</p>
 </div>
-
 <div>
 <h3>Contact Me!</h3>
 <p>Balwant Sagar</p>
@@ -205,11 +246,8 @@ Already Registered?
 <p>balwant@wonderstravel.com</p>
 <p>+91 9876543210</p>
 </div>
-
 </footer>
 
-<script type="module" src="firebase.js"></script>
 <script type="module" src="script.js"></script>
-
 </body>
 </html>
